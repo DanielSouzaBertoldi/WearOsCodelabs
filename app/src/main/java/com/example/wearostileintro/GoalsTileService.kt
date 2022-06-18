@@ -3,6 +3,7 @@ package com.example.wearostileintro
 import androidx.core.content.ContextCompat
 import androidx.wear.tiles.ColorBuilders.argb
 import androidx.wear.tiles.DeviceParametersBuilders
+import androidx.wear.tiles.DeviceParametersBuilders.DeviceParameters
 import androidx.wear.tiles.DimensionBuilders.*
 import androidx.wear.tiles.LayoutElementBuilders
 import androidx.wear.tiles.LayoutElementBuilders.*
@@ -101,7 +102,7 @@ class GoalsTileService : TileService() {
     // [Text], the total steps [Text], a [Spacer], and a running icon [Image].
     private fun layout(
         goalProgress: GoalProgess,
-        deviceParams: DeviceParametersBuilders.DeviceParameters,
+        deviceParams: DeviceParameters,
     ) = Box.Builder()
         // Sets width and height to expand and take up entire Tile space.
         .setWidth(expand())
@@ -109,14 +110,24 @@ class GoalsTileService : TileService() {
         // Adds an [Arc] via local function.
         .addContent(progressArc(goalProgress.percentage))
         // TODO: Add Column containing the rest of the data.
-        // TODO: START REPLACE THIS LATER
+        // Adds a [Column] containing the two [Text] objects, a [Spacer], and a [Image].
         .addContent(
-            Text.Builder()
-                .setText("REPLACE ME!")
-                .setFontStyle(FontStyles.display3(deviceParams).build())
+            Column.Builder()
+                // Adds a [Text] via local function.
+                .addContent(
+                    currentStepText(goalProgress.current.toString(), deviceParams)
+                )
+                // Adds a [Text] via local function.
+                .addContent(
+                    totalStepsText(
+                        resources.getString(R.string.goal, goalProgress.goal),
+                        deviceParams,
+                    )
+                )
+                // TODO: Add Spacer and Image representations of our step graphic.
+                // DO LATER
                 .build()
         )
-        // TODO: END REPLACE THIS LATER
         .build()
 
 
@@ -138,9 +149,16 @@ class GoalsTileService : TileService() {
         .setAnchorType(ARC_ANCHOR_START)
         .build()
 
-    // TODO: Create functions that construct/stylize Text representations of the step count & goal.
+    // Creates a [Text] with current step count and stylizes it.
+    private fun currentStepText(current: String, deviceParams: DeviceParameters) = Text.Builder()
+        .setText(current)
+        .setFontStyle(FontStyles.display1(deviceParams).build())
+        .build()
 
 
-    // TODO: Create a function that constructs/stylizes a clickable Image of a running icon.
-
+    // Creates a [Text] with total step count goal and stylizes it.
+    private fun totalStepsText(goal: String, deviceParams: DeviceParameters) = Text.Builder()
+        .setText(goal)
+        .setFontStyle(FontStyles.title3(deviceParams).build())
+        .build()
 }
