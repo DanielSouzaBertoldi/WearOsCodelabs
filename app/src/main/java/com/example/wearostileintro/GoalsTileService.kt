@@ -1,11 +1,13 @@
 package com.example.wearostileintro
 
 import androidx.core.content.ContextCompat
+import androidx.wear.tiles.ActionBuilders
 import androidx.wear.tiles.ColorBuilders.argb
 import androidx.wear.tiles.DeviceParametersBuilders.DeviceParameters
 import androidx.wear.tiles.DimensionBuilders.*
 import androidx.wear.tiles.LayoutElementBuilders.*
 import androidx.wear.tiles.ModifiersBuilders.Background
+import androidx.wear.tiles.ModifiersBuilders.Clickable
 import androidx.wear.tiles.ModifiersBuilders.Corner
 import androidx.wear.tiles.ModifiersBuilders.Padding
 import androidx.wear.tiles.ModifiersBuilders.Modifiers
@@ -50,7 +52,6 @@ class GoalsTileService : TileService() {
     // For coroutines, use a custom scope we can cancel when the service is destroyed
     private val serviceScope = CoroutineScope(Dispatchers.IO)
 
-    // TODO: Build a tile.
     override fun onTileRequest(
         requestParams: RequestBuilders.TileRequest
     ) = serviceScope.future {
@@ -196,9 +197,12 @@ class GoalsTileService : TileService() {
                         .setColor(argb(ContextCompat.getColor(this, R.color.primaryDark)))
                         .build()
                 )
-                // TODO: Add click (START)
-                // DO LATER
-                // TODO: Add click (END)
+                .setClickable(
+                    Clickable.Builder()
+                        .setId(ID_CLICK_START_RUN)
+                        .setOnClick(ActionBuilders.LoadAction.Builder().build())
+                        .build()
+                )
                 .build()
         )
         .build()

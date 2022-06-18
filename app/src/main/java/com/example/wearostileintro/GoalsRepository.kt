@@ -13,7 +13,7 @@ data class GoalProgess(
 object GoalsRepository {
     suspend fun getGoalProgress(): GoalProgess {
         delay(200)
-        return goalProgress.copy(current = listOf(1000, 2000, 4000, 5000).random())
+        return goalProgress.copy(current = Random.nextInt(from = 50, until = 8000))
     }
 }
 
