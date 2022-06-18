@@ -1,8 +1,11 @@
 package com.example.wearostileintro
 
-import androidx.wear.tiles.DimensionBuilders.dp
-import androidx.wear.tiles.LayoutElementBuilders.Layout
-import androidx.wear.tiles.LayoutElementBuilders.Text
+import androidx.core.content.ContextCompat
+import androidx.wear.tiles.ColorBuilders.argb
+import androidx.wear.tiles.DeviceParametersBuilders
+import androidx.wear.tiles.DimensionBuilders.*
+import androidx.wear.tiles.LayoutElementBuilders
+import androidx.wear.tiles.LayoutElementBuilders.*
 import androidx.wear.tiles.RequestBuilders
 import androidx.wear.tiles.ResourceBuilders.Resources
 import androidx.wear.tiles.TileBuilders.Tile
@@ -46,6 +49,11 @@ class GoalsTileService : TileService() {
     override fun onTileRequest(
         requestParams: RequestBuilders.TileRequest
     ) = serviceScope.future {
+        // Retrieves progress value to populate the Tile.
+        val goalProgress = GoalsRepository.getGoalProgress()
+        // Retrieves device parameters to later retrieve font styles for any text in the Tile.
+        val deviceParams = requestParams.deviceParameters!!
+
         // Creates a tile
         Tile.Builder()
             // If there are any graphics/images defined in the Tile's layout, the system will
@@ -59,7 +67,8 @@ class GoalsTileService : TileService() {
                             .setLayout(
                                 Layout.Builder()
                                     .setRoot(
-                                        Text.Builder().setText("Hello, world!").build()
+                                        // Creates the root [Box] [LayoutElement]
+                                        layout(goalProgress, deviceParams)
                                     )
                                     .build()
                             )
@@ -87,11 +96,47 @@ class GoalsTileService : TileService() {
         serviceScope.cancel()
     }
 
-    // TODO: Create root Box layout and content.
+    // Creates a simple [Box] container that lays out its children one over the other. In our
+    // case, an [Arc] that shows progress on top of a [Column] that includes the current steps
+    // [Text], the total steps [Text], a [Spacer], and a running icon [Image].
+    private fun layout(
+        goalProgress: GoalProgess,
+        deviceParams: DeviceParametersBuilders.DeviceParameters,
+    ) = Box.Builder()
+        // Sets width and height to expand and take up entire Tile space.
+        .setWidth(expand())
+        .setHeight(expand())
+        // Adds an [Arc] via local function.
+        .addContent(progressArc(goalProgress.percentage))
+        // TODO: Add Column containing the rest of the data.
+        // TODO: START REPLACE THIS LATER
+        .addContent(
+            Text.Builder()
+                .setText("REPLACE ME!")
+                .setFontStyle(FontStyles.display3(deviceParams).build())
+                .build()
+        )
+        // TODO: END REPLACE THIS LATER
+        .build()
 
 
-    // TODO: Create a function that constructs an Arc representation of the current step progress.
-
+    // Creates an [Arc] representing current progress towards steps goal.
+    private fun progressArc(percentage: Float) = Arc.Builder()
+        .addContent(
+            ArcLine.Builder()
+                // Uses degrees() helper to build an [AngularDimension] which represents progress.
+                .setLength(degrees(percentage * ARC_TOTAL_DEGREES))
+                .setColor(argb(ContextCompat.getColor(this, R.color.primary)))
+                .setThickness(PROGRESS_BAR_THICKNESS)
+                .build()
+        )
+        // Element will start at 12 o'clock or 0 degree position in the circle.
+        .setAnchorAngle(degrees(0.0f))
+        // Aligns the contents of this container relative to anchor angle above.
+        // ARC_ANCHOR_START - Anchors at the start of the elements. This will cause elements
+        // added to an arc to begin at the given anchor_angle, and sweep around to the right.
+        .setAnchorType(ARC_ANCHOR_START)
+        .build()
 
     // TODO: Create functions that construct/stylize Text representations of the step count & goal.
 

@@ -13,8 +13,8 @@ data class GoalProgess(
 object GoalsRepository {
     suspend fun getGoalProgress(): GoalProgess {
         delay(200)
-        return goalProgress.copy(current = Random.nextInt())
+        return goalProgress.copy(current = listOf(1000, 2000, 4000, 5000).random())
     }
 }
 
-val goalProgress = GoalProgess(current = 0, goal = 8000)
+val goalProgress = GoalProgess(current = 50, goal = 8000)
