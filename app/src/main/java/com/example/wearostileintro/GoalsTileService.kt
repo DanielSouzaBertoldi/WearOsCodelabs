@@ -2,13 +2,17 @@ package com.example.wearostileintro
 
 import androidx.core.content.ContextCompat
 import androidx.wear.tiles.ColorBuilders.argb
-import androidx.wear.tiles.DeviceParametersBuilders
 import androidx.wear.tiles.DeviceParametersBuilders.DeviceParameters
 import androidx.wear.tiles.DimensionBuilders.*
-import androidx.wear.tiles.LayoutElementBuilders
 import androidx.wear.tiles.LayoutElementBuilders.*
+import androidx.wear.tiles.ModifiersBuilders.Background
+import androidx.wear.tiles.ModifiersBuilders.Corner
+import androidx.wear.tiles.ModifiersBuilders.Padding
+import androidx.wear.tiles.ModifiersBuilders.Modifiers
 import androidx.wear.tiles.RequestBuilders
+import androidx.wear.tiles.ResourceBuilders.AndroidImageResourceByResId
 import androidx.wear.tiles.ResourceBuilders.Resources
+import androidx.wear.tiles.ResourceBuilders.ImageResource
 import androidx.wear.tiles.TileBuilders.Tile
 import androidx.wear.tiles.TileService
 import androidx.wear.tiles.TimelineBuilders.Timeline
@@ -80,13 +84,21 @@ class GoalsTileService : TileService() {
             .build()
     }
 
-    // TODO: Supply resources (graphics) for the Tile.
     override fun onResourcesRequest(
         requestParams: RequestBuilders.ResourcesRequest
     ) = serviceScope.future {
         Resources.Builder()
             .setVersion(RESOURCES_VERSION)
-            // No Resources quite yet!
+            .addIdToImageMapping(
+                ID_IMAGE_START_RUN,
+                ImageResource.Builder()
+                    .setAndroidResourceByResId(
+                        AndroidImageResourceByResId.Builder()
+                            .setResourceId(R.drawable.ic_run)
+                            .build()
+                    )
+                    .build()
+            )
             .build()
     }
 
@@ -125,7 +137,8 @@ class GoalsTileService : TileService() {
                     )
                 )
                 // TODO: Add Spacer and Image representations of our step graphic.
-                // DO LATER
+                .addContent(Spacer.Builder().setHeight(VERTICAL_SPACING_HEIGHT).build())
+                .addContent(startRunButton())
                 .build()
         )
         .build()
@@ -160,5 +173,33 @@ class GoalsTileService : TileService() {
     private fun totalStepsText(goal: String, deviceParams: DeviceParameters) = Text.Builder()
         .setText(goal)
         .setFontStyle(FontStyles.title3(deviceParams).build())
+        .build()
+
+    // Creates a running icon [Image] that's also a button to refresh the tile.
+    private fun startRunButton() = Image.Builder()
+        .setWidth(BUTTON_SIZE)
+        .setHeight(BUTTON_SIZE)
+        .setResourceId(ID_IMAGE_START_RUN)
+        .setModifiers(
+            Modifiers.Builder()
+                .setPadding(
+                    Padding.Builder()
+                        .setStart(BUTTON_PADDING)
+                        .setEnd(BUTTON_PADDING)
+                        .setTop(BUTTON_PADDING)
+                        .setBottom(BUTTON_PADDING)
+                        .build()
+                )
+                .setBackground(
+                    Background.Builder()
+                        .setCorner(Corner.Builder().setRadius(BUTTON_RADIUS).build())
+                        .setColor(argb(ContextCompat.getColor(this, R.color.primaryDark)))
+                        .build()
+                )
+                // TODO: Add click (START)
+                // DO LATER
+                // TODO: Add click (END)
+                .build()
+        )
         .build()
 }
