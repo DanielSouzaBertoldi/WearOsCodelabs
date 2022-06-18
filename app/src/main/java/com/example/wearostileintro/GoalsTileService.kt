@@ -59,11 +59,7 @@ class GoalsTileService : TileService() {
                             .setLayout(
                                 Layout.Builder()
                                     .setRoot(
-                                        Text.Builder()
-                                            .setText(
-                                                getString(R.string.placeholder_text)
-                                            )
-                                            .build()
+                                        Text.Builder().setText("Hello, world!").build()
                                     )
                                     .build()
                             )
