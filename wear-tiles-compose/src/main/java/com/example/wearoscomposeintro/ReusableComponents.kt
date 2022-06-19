@@ -1,6 +1,9 @@
 package com.example.wearoscomposeintro
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Message
+import androidx.compose.material.icons.rounded.Phone
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -8,34 +11,69 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.wear.compose.material.MaterialTheme
-import androidx.wear.compose.material.Text
+import androidx.wear.compose.material.*
 import com.example.wearoscomposeintro.theme.WearAppTheme
 import com.example.wearoscomposeintro.R
 
 /* Contains individual Wear OS demo composables */
 
-// TODO: Create a Button Composable (with a Row to center)
+// Creates a Button Composable (with a Row to center)
 @Composable
 fun ButtonExample(
     modifier: Modifier = Modifier,
     iconModifier: Modifier = Modifier,
 ) {
-
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.Center,
+    ) {
+        // Button
+        Button(
+            modifier = Modifier.size(ButtonDefaults.LargeButtonSize),
+            onClick = { /* ... */ },
+        ) {
+            Icon(
+                imageVector = Icons.Rounded.Phone,
+                contentDescription = "triggers phone action",
+                modifier = iconModifier,
+            )
+        }
+    }
 }
 
-// TODO: Create a Text Composable
+// Creates a Text Composable
 @Composable
 fun TextExample(modifier: Modifier = Modifier) {
-
+    Text(
+        modifier = modifier,
+        textAlign = TextAlign.Center,
+        color = MaterialTheme.colors.primary,
+        text = stringResource(id = R.string.device_shape),
+    )
 }
 
-// TODO: Create a Card (specifically, an AppCard) Composable
+// Creates a Card (specifically, an AppCard) Composable
+@Composable
 fun CardExample(
     modifier: Modifier = Modifier,
     iconModifier: Modifier = Modifier,
 ) {
-
+    AppCard(
+        modifier = modifier,
+        appImage = {
+            Icon(
+                imageVector = Icons.Rounded.Message,
+                contentDescription = "triggers open message action",
+                modifier = iconModifier,
+            )
+        },
+        appName = { Text("Messages") },
+        time = { Text("12m") },
+        title = { Text("Kim Green") },
+        onClick = { /* ... */ }
+    ) {
+        Text("On my way!")
+    }
 }
 
 // TODO: Create a Chip Composable
@@ -121,7 +159,9 @@ fun ButtonExamplePreview() {
 fun TextExamplePreview() {
     WearAppTheme {
         TextExample(
-            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp)
         )
     }
 }
@@ -140,8 +180,12 @@ fun TextExamplePreview() {
 fun CardExamplePreview() {
     WearAppTheme {
         CardExample(
-            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
-            iconModifier = Modifier.size(24.dp).wrapContentSize(align = Alignment.Center),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp),
+            iconModifier = Modifier
+                .size(24.dp)
+                .wrapContentSize(align = Alignment.Center),
         )
     }
 }
@@ -160,8 +204,12 @@ fun CardExamplePreview() {
 fun ChipExamplePreview() {
     WearAppTheme {
         ChipExample(
-            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
-            iconModifier = Modifier.size(24.dp).wrapContentSize(align = Alignment.Center)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp),
+            iconModifier = Modifier
+                .size(24.dp)
+                .wrapContentSize(align = Alignment.Center)
         )
     }
 }
@@ -180,7 +228,9 @@ fun ChipExamplePreview() {
 fun ToggleChipExamplePreview() {
     WearAppTheme {
         ToggleChipExample(
-            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp)
         )
     }
 }
