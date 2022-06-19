@@ -4,13 +4,14 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.wear.compose.material.AutoCenteringParams
+import androidx.wear.compose.material.ScalingLazyColumn
+import androidx.wear.compose.material.rememberScalingLazyListState
 import com.example.wearoscomposeintro.theme.WearAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -28,7 +29,7 @@ class MainActivity : ComponentActivity() {
 fun WearApp() {
     WearAppTheme {
         // TODO: Swap to ScalingLazyListState
-        val listState = rememberLazyListState()
+        val listState = rememberScalingLazyListState()
 
         /* *************************** Part 4: Wear OS Scaffold *************************** */
         // TODO (Start): Create a Scaffold (Wear Version)
@@ -41,17 +42,13 @@ fun WearApp() {
             .size(24.dp)
             .wrapContentSize(align = Alignment.Center)
 
-        /* *************************** Part 3: ScalingLazyColumn *************************** */
-        // TODO: Swap a ScalingLazyColumn (Wear's version of LazyColumn)
-        LazyColumn(
+        ScalingLazyColumn(
             modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(
-                top = 32.dp,
-                start = 8.dp,
-                end = 8.dp,
-                bottom = 32.dp,
-            ),
-            verticalArrangement = Arrangement.Center,
+            // In many cases default parameters will be sufficient,
+            // if you have header on top we recommend putting it into ListHeader as a first item.
+            // Otherwise, consider setting autoCentering with the itemIndex as 0 that will
+            // provide sufficient padding for the first item.
+            autoCentering = AutoCenteringParams(itemIndex = 0),
             state = listState,
         ) {
 
