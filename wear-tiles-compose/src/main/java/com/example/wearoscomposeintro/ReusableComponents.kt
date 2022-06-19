@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.MaterialTheme
 import androidx.wear.compose.material.Text
 import com.example.wearoscomposeintro.theme.WearAppTheme
-import com.example.wearostileintro.R
+import com.example.wearoscomposeintro.R
 
 /* Contains individual Wear OS demo composables */
 
