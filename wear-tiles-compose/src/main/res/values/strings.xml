@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">WearOS Compose Intro</string>
+    <!--
+    This string is used for square devices and overridden by device_shape in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="device_shape">Square Device</string>
+    <string name="hello_world_starter">Hello, Compose World!</string>
+</resources>

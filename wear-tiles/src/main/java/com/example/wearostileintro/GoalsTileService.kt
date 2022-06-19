@@ -24,7 +24,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.guava.future
 
-// TODO: Review Constants.
 // Updating this version triggers a new call to onResourcesRequest(). This is useful for dynamic
 // resources, the contents of which change even though their id stays the same (e.g. a graph).
 // In this sample, our resources are all fixed, so we use a constant value.

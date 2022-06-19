@@ -13,4 +13,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "WearOS Tile Intro"
-include ':app'
+include ':wear-tiles', ':wear-tiles-compose'
