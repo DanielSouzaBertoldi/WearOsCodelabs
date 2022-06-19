@@ -4,16 +4,22 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Message
 import androidx.compose.material.icons.rounded.Phone
+import androidx.compose.material.icons.rounded.SelfImprovement
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.*
 import com.example.wearoscomposeintro.theme.WearAppTheme
 import com.example.wearoscomposeintro.R
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 
 /* Contains individual Wear OS demo composables */
 
@@ -76,18 +82,57 @@ fun CardExample(
     }
 }
 
-// TODO: Create a Chip Composable
+// Creates a Chip Composable
+@Composable
 fun ChipExample(
     modifier: Modifier = Modifier,
     iconModifier: Modifier = Modifier,
 ) {
-
+    Chip(
+        modifier = modifier,
+        onClick = { /* ... */ },
+        label = {
+            Text(
+                text = "5 Minute Meditation",
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        },
+        icon = {
+            Icon(
+                imageVector = Icons.Rounded.SelfImprovement,
+                contentDescription = "triggers meditation action",
+                modifier = iconModifier,
+            )
+        }
+    )
 }
 
-// TODO: Create a ToggleChip Composable
+// Creates a ToggleChip Composable
 @Composable
 fun ToggleChipExample(modifier: Modifier = Modifier) {
+    var checked by remember { mutableStateOf(true) }
 
+    ToggleChip(
+        modifier = modifier,
+        checked = checked,
+        toggleControl = {
+            Icon(
+                imageVector = ToggleChipDefaults.switchIcon(checked = checked),
+                contentDescription = if (checked) "On" else "Off",
+            )
+        },
+        onCheckedChange = {
+            checked = it
+        },
+        label = {
+            Text(
+                text = "Sound",
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
+    )
 }
 
 // Function only used as a demo for starting the app for the first time (later removed).
