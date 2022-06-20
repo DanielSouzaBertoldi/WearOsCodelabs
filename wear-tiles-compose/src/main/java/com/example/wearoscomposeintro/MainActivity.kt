@@ -9,9 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.wear.compose.material.AutoCenteringParams
-import androidx.wear.compose.material.ScalingLazyColumn
-import androidx.wear.compose.material.rememberScalingLazyListState
+import androidx.wear.compose.material.*
 import com.example.wearoscomposeintro.theme.WearAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -28,41 +26,49 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun WearApp() {
     WearAppTheme {
-        // TODO: Swap to ScalingLazyListState
         val listState = rememberScalingLazyListState()
 
-        /* *************************** Part 4: Wear OS Scaffold *************************** */
-        // TODO (Start): Create a Scaffold (Wear Version)
-
-        // Modifiers used by our Wear composables.
-        val contentModifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = 8.dp)
-        val iconModifier = Modifier
-            .size(24.dp)
-            .wrapContentSize(align = Alignment.Center)
-
-        ScalingLazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            // In many cases default parameters will be sufficient,
-            // if you have header on top we recommend putting it into ListHeader as a first item.
-            // Otherwise, consider setting autoCentering with the itemIndex as 0 that will
-            // provide sufficient padding for the first item.
-            autoCentering = AutoCenteringParams(itemIndex = 0),
-            state = listState,
+        Scaffold(
+            timeText = {
+                if (!listState.isScrollInProgress) {
+                    TimeText()
+                }
+            },
+            vignette = {
+                // Only show a Vignette for scrollable screens. This code lab only has one screen,
+                // which is scrollable, so we show it all the time.
+                Vignette(vignettePosition = VignettePosition.TopAndBottom)
+            },
+            positionIndicator = {
+                PositionIndicator(scalingLazyListState = listState)
+            },
         ) {
+            // Modifiers used by our Wear composables.
+            val contentModifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp)
+            val iconModifier = Modifier
+                .size(24.dp)
+                .wrapContentSize(align = Alignment.Center)
 
-            /* ******************* Part 1: Simple composables ******************* */
-            item { ButtonExample(contentModifier, iconModifier) }
-            item { TextExample(contentModifier) }
-            item { CardExample(contentModifier, iconModifier) }
+            ScalingLazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                // In many cases default parameters will be sufficient,
+                // if you have header on top we recommend putting it into ListHeader as a first item.
+                // Otherwise, consider setting autoCentering with the itemIndex as 0 that will
+                // provide sufficient padding for the first item.
+                autoCentering = AutoCenteringParams(itemIndex = 0),
+                state = listState,
+            ) {
 
-            /* ********************* Part 2: Wear unique composables ********************* */
-            item { ChipExample(contentModifier, iconModifier) }
-            item { ToggleChipExample(contentModifier) }
+                item { ButtonExample(contentModifier, iconModifier) }
+                item { TextExample(contentModifier) }
+                item { CardExample(contentModifier, iconModifier) }
+
+                item { ChipExample(contentModifier, iconModifier) }
+                item { ToggleChipExample(contentModifier) }
+            }
         }
-
-        // TODO (End): Create a Scaffold (Wear Version)
     }
 }
 
